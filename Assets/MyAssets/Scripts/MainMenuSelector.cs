@@ -18,7 +18,24 @@ public class MainMenuSelector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            currentIndex = (currentIndex + 1) % menuItems.Length;
+            UpdateColors();
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            currentIndex -= 1;
+            if (currentIndex < 0)
+            {
+                currentIndex += menuItems.Length;
+            }
+            UpdateColors();
+        }
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ActivateItem(currentIndex);
+        }
     }
 
     void UpdateColors()
@@ -34,5 +51,10 @@ public class MainMenuSelector : MonoBehaviour
                 menuItems[i].color = normalColor;
             }
         }
+    }
+
+    void ActivateItem(int index)
+    {
+        Debug.Log("Aktivoitu: " + menuItems[index].text);
     }
 }
