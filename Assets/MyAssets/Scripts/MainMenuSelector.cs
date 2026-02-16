@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MainMenuSelector : MonoBehaviour
 {
@@ -56,5 +57,21 @@ public class MainMenuSelector : MonoBehaviour
     void ActivateItem(int index)
     {
         Debug.Log("Aktivoitu: " + menuItems[index].text);
+        if (menuItems[index].text == "quit")
+        {
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
+        else if (menuItems[index].text == "games")
+        {
+            SceneManager.LoadScene("GameMenu");
+        }
+        else if (menuItems[index].text == "settings")
+        {
+            SceneManager.LoadScene("Settings");
+        }
     }
 }
