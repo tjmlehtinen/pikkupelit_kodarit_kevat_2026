@@ -7,6 +7,7 @@ public class FadeController : MonoBehaviour
 
     private Image fadeImage;
     private Color originalColor;
+    private Coroutine currentRoutine;
 
     void Awake()
     {
@@ -15,12 +16,39 @@ public class FadeController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        FadeOut();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void FadeOut() => StartFade(0f);
+    void StartFade(float targetAlpha)
+    {
+        if (currentRoutine != null)
+        {
+            StopCoroutine(currentRoutine);
+        }
+        currentRoutine = StartCoroutine(FadeRoutine(targetAlpha));
+    }
+    private System.Collections.IEnumerator FadeRoutine(float targetAlpha)
+    {
+        float time = 0f;
+        float startAlpha = fadeImage.color.a;
+        while (time < fadeDuration)
+        {
+            time += Time.deltaTime;
+            float t = time / fadeDuration;
+            Color tempColor = fadeImage.color;
+            tempColor.a = Mathf.Lerp(startAlpha, targetAlpha, t);
+            fadeImage.color = tempColor;
+            yield return null;
+        }
+        Color finalColor = fadeImage.color;
+        finalColor.a = targetAlpha;
+        fadeImage.color = finalColor;
     }
 }
