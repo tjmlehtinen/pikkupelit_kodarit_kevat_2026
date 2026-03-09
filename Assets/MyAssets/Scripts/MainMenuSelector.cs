@@ -10,6 +10,8 @@ public class MainMenuSelector : MonoBehaviour
     public Color highlightColor = Color.red;
 
     private int currentIndex = 0;
+
+    public FadeController fader;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -67,11 +69,18 @@ public class MainMenuSelector : MonoBehaviour
         }
         else if (menuItems[index].text == "games")
         {
-            SceneManager.LoadScene("GameMenu");
+            StartCoroutine(ChangeToMyScene("GameMenu"));
         }
         else if (menuItems[index].text == "settings")
         {
-            SceneManager.LoadScene("Settings");
+            StartCoroutine(ChangeToMyScene("Settings"));
         }
     }
+
+    private System.Collections.IEnumerator ChangeToMyScene(string sceneName)
+    {
+        fader.FadeIn();
+        yield return new WaitForSeconds(fader.fadeDuration);
+        SceneManager.LoadScene(sceneName);
+    } 
 }

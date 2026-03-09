@@ -12,6 +12,7 @@ public class FadeController : MonoBehaviour
     void Awake()
     {
         fadeImage = GetComponent<Image>();
+        originalColor = fadeImage.color;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,6 +27,7 @@ public class FadeController : MonoBehaviour
     }
 
     public void FadeOut() => StartFade(0f);
+    public void FadeIn() => StartFade(originalColor.a);
     void StartFade(float targetAlpha)
     {
         if (currentRoutine != null)
