@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameMenuSelector : MonoBehaviour
 {
-    public GameObject[] games;
+    public GameObject[] menuItems;
     public float moveWidth = 20f;
     public float moveSpeed = 10f;
     private int currentIndex = 0;
@@ -22,22 +22,40 @@ public class GameMenuSelector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        int oldIndex = currentIndex;
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             currentIndex = (currentIndex + 1) % menuItems.Length;
+            StartCoroutine(SwitchMenuItem(oldIndex, currentIndex, true));
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             currentIndex -= 1;
             if (currentIndex < 0)
             {
                 currentIndex += menuItems.Length;
             }
+            StartCoroutine(SwitchMenuItem(oldIndex, currentIndex, false));
         }
     }
 
-    private IEnumerator SwitchMenuItem(int oldIndex, int newIndex, bool movingRight)
+    private System.Collections.IEnumerator SwitchMenuItem(int oldIndex, int newIndex, bool movingRight)
     {
-        
+        GameObject oldMenuItem = menuItems[oldIndex];
+        GameObject newMenuItem = menuItems[newIndex];
+
+        Vector3 targetForOld = movingRight ? rightPosition : leftPosition;
+        Vector3 startForNew = movingRight ? leftPosition : rightPosition;
+
+        newMenuItem.transform.position = startForNew;
+        newMenuItem.SetActive(true);
+
+        while (Vector3.Distance(newMenuItem.transform.position, centerPosition) > 0.01f)
+        {
+            oldMenuItem.transform.position = Vector3.MoveTowards(oldMenuItem.transform.position, targetForOld, moveSpeed * Time.deltaTime);
+            newMenuItem.transform.position = Vector3.MoveTowards(newMenuItem.transform.position, centerPosition, moveSpeed * Time.deltaTime);
+        }
+        oldMenuItem.SetActive(false);
+        yield return null;
     }
 }
