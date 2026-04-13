@@ -1139,7 +1139,7 @@ MonoBehaviour:
   - {fileID: 1525046467}
   - {fileID: 291208887}
   - {fileID: 670706992}
-  moveWidth: 20
+  moveWidth: 15
   moveSpeed: 10
 --- !u!4 &1933961955
 Transform:
