@@ -36,7 +36,7 @@ public class GameMenuSelector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         int oldIndex = currentIndex;
         if (!isMoving && Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -51,6 +51,10 @@ public class GameMenuSelector : MonoBehaviour
                 currentIndex += menuItems.Length;
             }
             StartCoroutine(SwitchMenuItem(oldIndex, currentIndex, false));
+        }
+        if (!isMoving && Input.GetKeyDown(KeyCode.Return))
+        {
+            StartGame(currentIndex);
         }
     }
 
@@ -77,4 +81,18 @@ public class GameMenuSelector : MonoBehaviour
         oldMenuItem.SetActive(false);
         isMoving = false;
     }
+    private void StartGame(int index)
+    {
+        if (index == 0)
+        {
+            StartCoroutine(ChangeToMyScene("Game1"));
+        }
+    }
+
+    private System.Collections.IEnumerator ChangeToMyScene(string sceneName)
+    {
+        fader.FadeIn();
+        yield return new WaitForSeconds(fader.fadeDuration);
+        SceneManager.LoadScene(sceneName);
+    } 
 }
