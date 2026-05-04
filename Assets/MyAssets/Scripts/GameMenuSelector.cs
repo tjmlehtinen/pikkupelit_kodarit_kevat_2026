@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameMenuSelector : MonoBehaviour
 {
     public GameObject[] menuItems;
+    public FadeController fader;
     private float moveWidth = 15f;
     private float moveSpeed = 15f;
     private int currentIndex = 0;
