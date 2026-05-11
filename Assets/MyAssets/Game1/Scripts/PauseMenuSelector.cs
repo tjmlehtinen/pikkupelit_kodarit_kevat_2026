@@ -10,17 +10,35 @@ public class PauseMenuSelector : MonoBehaviour
     public Color highlightColor = Color.red;
 
     private int currentIndex = 0;
+    private bool isPaused = false;
 
     public FadeController fader;
+    public GameObject pauseMenu;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        isPaused = false;
+        pauseMenu.SetActive(false);
         UpdateColors();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
+
+        if (!isPaused) return;
+
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             currentIndex = (currentIndex + 1) % menuItems.Length;
@@ -67,13 +85,13 @@ public class PauseMenuSelector : MonoBehaviour
             Application.Quit();
 #endif
         }
-        else if (menuItems[index].text == "games")
+        else if (menuItems[index].text == "main menu")
         {
-            StartCoroutine(ChangeToMyScene("GameMenu"));
+            StartCoroutine(ChangeToMyScene("MainMenu"));
         }
-        else if (menuItems[index].text == "settings")
+        else if (menuItems[index].text == "resume game")
         {
-            StartCoroutine(ChangeToMyScene("Settings"));
+            Debug.Log("RESUME GAME");
         }
     }
 
@@ -82,5 +100,17 @@ public class PauseMenuSelector : MonoBehaviour
         fader.FadeIn();
         yield return new WaitForSeconds(fader.fadeDuration);
         SceneManager.LoadScene(sceneName);
-    } 
+    }
+
+    void PauseGame()
+    {
+        isPaused = true;
+        pauseMenu.SetActive(true);
+    }
+
+    void ResumeGame()
+    {
+        isPaused = false;
+        pauseMenu.SetActive(false);
+    }
 }
