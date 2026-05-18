@@ -87,11 +87,12 @@ public class PauseMenuSelector : MonoBehaviour
         }
         else if (menuItems[index].text == "main menu")
         {
+            Time.timeScale = 1f;
             StartCoroutine(ChangeToMyScene("MainMenu"));
         }
         else if (menuItems[index].text == "resume game")
         {
-            Debug.Log("RESUME GAME");
+            ResumeGame();
         }
     }
 
@@ -105,12 +106,14 @@ public class PauseMenuSelector : MonoBehaviour
     void PauseGame()
     {
         isPaused = true;
+        Time.timeScale = 0f;
         pauseMenu.SetActive(true);
     }
 
     void ResumeGame()
     {
         isPaused = false;
+        Time.timeScale = 1f;
         pauseMenu.SetActive(false);
     }
 }
